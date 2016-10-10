@@ -1,0 +1,121 @@
+<head>
+
+    <title>RSA example</title>
+
+
+    <link rel="stylesheet" media="all" href=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!-- Adding "maximum-scale=1" fixes the Mobile Safari auto-zoom bug: http://filamentgroup.com/examples/iosScaleBug/ -->
+</head>
+
+<body>
+
+<h1>&nbsp;RSA Example</h1>
+<div style="margin-left: 30px">
+<div>
+
+
+<form>
+
+
+    <p>
+    <div class="field-wrap">
+    <label>Send a <strong>ENCRYPTED</strong> message</label><br>
+    <input ng-model="data.secret" required style="width: 300px; height: 50px">
+    </div>
+
+
+
+
+
+</form>
+
+<div>
+    <button class="btn btn-primary" ng-click="sendEncrypted()">Send</button>&nbsp;&nbsp;&nbsp;<b ng-show="sent">SENT</b>
+</div>
+
+
+
+<br>
+    <br>
+
+    <form>
+
+
+        <p>
+        <div class="field-wrap">
+            <label>Send a challenge to <strong>AUTHENTICATE</strong> the server</label><br>
+            <input ng-model="data.challenge" required style="width: 300px; height: 50px">
+        </div>
+
+
+
+
+
+    </form>
+
+    <div>
+        <button class="btn btn-primary" ng-click="sendChallenge()">Send</button>
+
+
+        <div ng-show="resultOK">
+            Result:<br>
+            <b>Authentication OK</b>
+            <br><b>Hash MD5:</b> {{ hash}}
+            <br><b>Server info:</b> {{cert}}
+
+        </div>
+        <div ng-show="resultFAIL">
+            Failed authentication
+        </div>
+
+
+
+
+    </div>
+
+</div>
+
+<br>
+<br>
+
+<form>
+
+
+    <p>
+    <div class="field-wrap">
+        <label>Send a <strong>BLIND</strong> message</label><br>
+        <input ng-model="data.blind" required style="width: 300px; height: 50px">
+    </div>
+    <div ng-show="verifiedBlind">
+    <b>Correctly signed:</b> {{ blindSigned}}<br>
+    <b>Verification:</b> {{ blindAscii}}
+    </div>
+
+
+</form>
+
+<div>
+    <button class="btn btn-primary" ng-click="sendBlind()">Send</button>
+
+
+
+</div>
+
+<br>
+<br>
+<form>
+<div class="field-wrap">
+    <label>Run <strong>Protocol 5</strong> example</label><br>
+
+</div>
+
+
+</form>
+
+<div>
+    <button class="btn btn-primary" ng-click="sendProtocol5()">Send</button>
+
+</div>
+
+</div>
