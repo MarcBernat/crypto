@@ -9,8 +9,7 @@ var bignum = require('bignum');
 var CryptoJS = require('crypto-js');
 
 var keys = rsa.generateKeys(512);
-
-var crypto
+var crypto;
 
 function decryptPubKeyRemote (signed,e,n){
     return signed.powm(e,n);
@@ -129,10 +128,15 @@ router.post('/protocol5_ttp',function(req,res){
     var plaintext = secretMessage.toString(CryptoJS.enc.Utf8);
     console.log('SECRET MESSAGE: ###########################   '+plaintext+'   ###############################')
 
+});
 
-
+router.post('/paillier',function(req,res){
+    var x = paillierKeys.publicKey.n;
 
 });
+
+
+
 
 
 module.exports = router;

@@ -201,6 +201,127 @@ angular.module('App').controller('cryptoController', ['$scope', '$http',function
         });
     };
 
+    $scope.sendPaillier = function(){
+        //Sends two encryptes numbers, the servers sum them up and returns the result.
+        var keys = paillier.generateKeys(128);
+        console.log(keys);
+
+        var num1 = 13;
+        var num2 = 33;
+
+        //Example local
+        var plainSum = num1+num2;
+
+        console.log('-------------ADD-------------');
+        console.log('PLAIN SUM: '+plainSum);
+
+
+        var enc1 = keys.pub.encrypt(new BigInteger(num1.toString()).mod(keys.pub.n));
+        var enc2 = keys.pub.encrypt(new BigInteger(num2.toString()).mod(keys.pub.n));
+
+
+        var encryptedSum = keys.pub.add(enc1,enc2);
+        console.log("ENCRYPTED SUM: " + encryptedSum);
+        var sum = keys.sec.decrypt(encryptedSum);
+        console.log("DECRYPTED SUM: " + sum);
+
+        console.log('-------------MULT-------------');
+        var plainMult = num1*num2;
+        console.log('PLAIN SUM: '+plainMult);
+        var encryptedMult = keys.pub.mult(enc1, new BigInteger(num2.toString()));
+        console.log("ENCRYPTED MULT: " + encryptedMult);
+        var mult = keys.sec.decrypt(encryptedMult);
+        console.log("DECRYPTED MULT: " + mult);
+
+        //Example remote
+        var data=
+        {
+            num1:enc1.toString(),
+            num2:enc2.toString(),
+            n2:keys.pub.n2.toString()
+        };
+        console.log(data);
+/*
+        $http.post('/operaciones/sumar',data)
+            .success(function (data)
+            {
+                console.log("Intento mostrar la suma encriptada: " +  data);
+                var encriptedSum2 = new BigInteger(data.toString());
+                console.log("Intento mostrar la suma encriptada: " +  encriptedSum2);
+                var decripsuma = keys.sec.decrypt(encriptedSum2);
+                console.log("Intento mostrar la suma desencriptada: " + decripsuma);
+                $scope.resultado3 = 'correcto';
+                document.getElementById("resultadoSuma").innerHTML = (decripsuma);
+            })
+            .error(function (data) {
+                $scope.resultado3 = 'incorrecto';
+                console.log('Error: ' + data)
+            });
+        */
+    };
+
+    $scope.sharedSecret = function(){
+       // var key = secrets.random(512);
+        var secret = 'Bin Laden is alive';
+        // convert the text into a hex string
+        var secretHex = secrets.str2hex(secret); // => hex string
+
+        console.log('Split into 5 shares, with a threshold of 3');
+        var sharedsecret = secrets.share(secretHex, 5, 3);
+
+        console.log('The 5 shares:');
+        console.log(sharedsecret[0]);
+        console.log(sharedsecret[1]);
+        console.log(sharedsecret[2]);
+        console.log(sharedsecret[3]);
+        console.log(sharedsecret[4]);
+
+        console.log('Combining 3 of them....');
+        // combine 3 shares:
+        var comb = secrets.combine( [ sharedsecret[1], sharedsecret[3], sharedsecret[4] ] );
+
+        //convert back to UTF string:
+        var  combString = secrets.hex2str(comb);
+        console.log('SECRET: <<<<<<<<<<< '+combString+' >>>>>>>>>>');
+
+
+
+
+
+
+    };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }]);
 
 
